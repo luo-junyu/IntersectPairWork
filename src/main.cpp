@@ -7,11 +7,16 @@
 #include <algorithm>
 #include <set>
 
+const int debug_mood = 1;
+
 using namespace std;
 
 vector<struct Position> points;
 vector<Line> lines;
 vector<Circle> circles;
+vector<segLine> segLines;
+vector<rayLine> rayLines;
+
 
 int main(int argc, char** argv)
 {
@@ -26,17 +31,25 @@ int main(int argc, char** argv)
 	long long x, y, r;			// tmp var for circle
 	int line_num = 0;
 	int circle_num = 0;
+	int segLine_num = 0;
+	int rayLine_num = 0;
 
 
-	for (int index = 0; index < argc; index++) {
-		if ((string)argv[index] == "-i") {
-			index++;
-			input.open(argv[index]);
-		} else if ((string)argv[index] == "-o") {
-			index++;
-			output.open(argv[index]);
+	if (debug_mood) {
+		input.open("input.txt");
+	} else {
+		for (int index = 0; index < argc; index++) {
+			if ((string)argv[index] == "-i") {
+				index++;
+				input.open(argv[index]);
+			} else if ((string)argv[index] == "-o") {
+				index++;
+				output.open(argv[index]);
+			}
 		}
 	}
+
+	
 
 	input >> n;
 	for (int i = 0; i < n; i++) {
@@ -51,6 +64,16 @@ int main(int argc, char** argv)
 			Circle tmpCircle(x, y, r);
 			circles.push_back(tmpCircle);
 			circle_num++;
+		} else if (flag == 'S') {
+			input >> x1 >> y1 >> x2 >> y2;
+			segLine tmpSegLine(x1, y1, x2, y2);
+			segLines.push_back(tmpSegLine);
+			segLine_num++;
+		} else if (flag == 'R') {
+			input >> x1 >> y1 >> x2 >> y2;
+			rayLine tmprayLine(x1, y1, x2, y2);
+			rayLines.push_back(tmprayLine);
+			rayLine_num++;
 		}
 	}
 
@@ -63,12 +86,66 @@ int main(int argc, char** argv)
 		for (int j = i + 1; j < line_num; j++) {
 			Line& line1 = lines[i];
 			Line& line2 = lines[j];
-			long long denominator = line1.a * line2.b - line1.b * line2.a;
-			if (denominator != 0) {
-				points.push_back(line1.intersect(line2));
-			} 
+			line1.lineIntersect(line2, points);
 		}
 	}
+
+	// rayLine & rayLine
+	for (int i = 0; i < rayLine_num; i++) {
+		for (int j = i + 1; j < rayLine_num; j++) {
+			rayLine& line1 = rayLines[i];
+			rayLine& line2 = rayLines[j];
+			line1.lineIntersect(line2, points);
+		}
+	}
+
+	// rayLine & rayLine
+	for (int i = 0; i < segLine_num; i++) {
+		for (int j = i + 1; j < segLine_num; j++) {
+			segLine& line1 = segLines[i];
+			segLine& line2 = segLines[j];
+			line1.lineIntersect(line2, points);
+		}
+	}
+
+	// Line & rayLine
+
+	for (int i = 0; i < rayLine_num; i++) {
+		for (int j = 0; j < line_num; j++) {
+			rayLine& line1 = rayLines[i];
+			Line& line2 = lines[j];
+			line1.lineIntersect(line2, points);
+		}
+	}
+
+	// Line & segLine
+
+	for (int i = 0; i < segLine_num; i++) {
+		for (int j = 0; j < line_num; j++) {
+			segLine& line1 = segLines[i];
+			Line& line2 = lines[j];
+			line1.lineIntersect(line2, points);
+		}
+	}
+	
+	// rayLine & segLine
+
+	for (int i = 0; i < rayLine_num; i++) {
+		for (int j = 0; j < segLine_num; j++) {
+			segLine& line1 = segLines[i];
+			rayLine& line2 = rayLines[j];
+			line1.lineIntersect(line2, points);
+		}
+	}
+
+
+
+
+
+
+
+
+
 
 	// Line & Circle
 
@@ -90,13 +167,13 @@ int main(int argc, char** argv)
 		}
 	}
 
-	// TODO: Ray, Line segment
-	
 	// delete the repeat points
 	sort(points.begin(), points.end(), posCompare);
 	auto points_end = unique(points.begin(), points.end(), posEqual);
 
-	// cout << points_end - points.begin() << endl;
+	if (debug_mood) {
+		cout << points_end - points.begin() << endl;
+	}
 
 	output << points_end - points.begin();
 	output.close();
