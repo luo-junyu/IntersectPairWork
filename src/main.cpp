@@ -138,15 +138,6 @@ int main(int argc, char** argv)
 		}
 	}
 
-
-
-
-
-
-
-
-
-
 	// Line & Circle
 
 	for (int i = 0; i < line_num; i++) {
@@ -154,6 +145,26 @@ int main(int argc, char** argv)
 			Line& tmpLine = lines[i];
 			Circle& tmpCircle = circles[j];
 			tmpCircle.lineIntersect(tmpLine, points);
+		}
+	}
+
+	// rayLine & Circle
+
+	for (int i = 0; i < rayLine_num; i++) {
+		for (int j = 0; j < circle_num; j++) {
+			rayLine& tmpLine = rayLines[i];
+			Circle& tmpCircle = circles[j];
+			tmpCircle.rayLineIntersect(tmpLine, points);
+		}
+	}
+
+	// segLine & Circle
+
+	for (int i = 0; i < segLine_num; i++) {
+		for (int j = 0; j < circle_num; j++) {
+			segLine& tmpLine = segLines[i];
+			Circle& tmpCircle = circles[j];
+			tmpCircle.segLineIntersect(tmpLine, points);
 		}
 	}
 

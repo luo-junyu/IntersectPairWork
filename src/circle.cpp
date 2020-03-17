@@ -1,6 +1,6 @@
 ﻿#include "circle.h"
 
-void Circle::lineIntersect(const Line& line, vector<struct Position>& res_vector) {
+void Circle::lineIntersect(Line& line, vector<struct Position>& res_vector) {
 	struct Position res1;
 	struct Position res2;
 
@@ -19,27 +19,151 @@ void Circle::lineIntersect(const Line& line, vector<struct Position>& res_vector
 		double r_ = (d_x1 * x2_x1 + d_y1 * y2_y1) * 1.0 / norm;
 		double d_x4 = x2_x1 / denominator;
 		double d_y4 = y2_y1 / denominator;
-		double d_x5 = line.x1 + x2_x1 * r_ - this->x;
-		double d_y5 = line.y1 + y2_y1 * r_ - this->y;
+		double d_x3 = line.x1 + x2_x1 * r_;
+		double d_y3 = line.y1 + y2_y1 * r_;
+		double d_x5 = d_x3 - this->x;
+		double d_y5 = d_y3 - this->y;
 
 		if (fabs(distance - 1.0 * this->r) > eps) {
 			double base = sqrt(this_r_power - (d_x5 * d_x5 + d_y5 * d_y5));
-			res1.x = line.x1 + x2_x1 * r_ + d_x4 * base;
-			res1.y = line.y1 + y2_y1 * r_ + d_y4 * base;
-			res2.x = line.x1 + x2_x1 * r_ - d_x4 * base;
-			res2.y = line.y1 + y2_y1 * r_ - d_y4 * base;
+			res1.x = d_x3 + d_x4 * base;
+			res1.y = d_y3 + d_y4 * base;
+			res2.x = d_x3 - d_x4 * base;
+			res2.y = d_y3 - d_y4 * base;
 			res_vector.push_back(res1);
 			res_vector.push_back(res2);
 			return;
 		} else {
-			res1.x = line.x1 + x2_x1 * r_;
-			res1.y = line.y1 + y2_y1 * r_;
+			res1.x = d_x3;
+			res1.y = d_y3;
 			res_vector.push_back(res1);
 			return;
 		}
 	} 
 }
 
+
+void Circle::rayLineIntersect(rayLine& line, vector<struct Position>& res_vector) {
+	struct Position res1;
+	struct Position res2;
+
+	long long x2_x1 = line.x2 - line.x1;
+	long long y2_y1 = line.y2 - line.y1;
+	long long norm = line.a * line.a + line.b * line.b;		// A^2+B^2
+
+	long long d_x1 = this->x - line.x1;
+	long long d_y1 = this->y - line.y1;
+	double denominator = sqrt((double)norm);
+
+	// dis = Ax0+By0+C / denominator
+	// distance from the line to circle
+	double distance = fabs((line.a * this->x + line.b * this->y + line.c) / denominator);
+	if (distance - this->r * 1.0 < eps) {	// has intersect
+		double r_ = (d_x1 * x2_x1 + d_y1 * y2_y1) * 1.0 / norm;
+		double d_x4 = x2_x1 / denominator;
+		double d_y4 = y2_y1 / denominator;
+		double d_x3 = line.x1 + x2_x1 * r_;
+		double d_y3 = line.y1 + y2_y1 * r_;
+		double d_x5 = d_x3 - this->x;
+		double d_y5 = d_y3 - this->y;
+
+		if (fabs(distance - 1.0 * this->r) > eps) {
+			double base = sqrt(this_r_power - (d_x5 * d_x5 + d_y5 * d_y5));
+			res1.x = d_x3 + d_x4 * base;
+			if (!line.outRangeX(res1.x)) {
+				res1.y = d_y3 + d_y4 * base;
+				if (line.x_forward == 0 && line.outRangeY(res1.y)) {
+					// out range
+				} else {
+					res_vector.push_back(res1);
+				}
+			}
+
+			res2.x = d_x3 - d_x4 * base;
+			if (!line.outRangeX(res2.x)) {
+				res2.y = d_y3 - d_y4 * base;
+				if (line.x_forward == 0 && line.outRangeY(res2.y)) {
+					// out range
+				} else {
+					res_vector.push_back(res2);
+				}
+			}
+			return;
+		} else {
+			res1.x = d_x3;
+			if (!line.outRangeX(res1.x)) {
+				res1.y = d_y3;
+				if (line.x_forward == 0 && line.outRangeY(res1.y)) {
+					// out range
+				} else {
+					res_vector.push_back(res1);
+				}
+			}
+			return;
+		}
+	}
+}
+
+void Circle::segLineIntersect(segLine& line, vector<struct Position>& res_vector) {
+	struct Position res1;
+	struct Position res2;
+
+	long long x2_x1 = line.x2 - line.x1;
+	long long y2_y1 = line.y2 - line.y1;
+	long long norm = line.a * line.a + line.b * line.b;		// A^2+B^2
+
+	long long d_x1 = this->x - line.x1;
+	long long d_y1 = this->y - line.y1;
+	double denominator = sqrt((double)norm);
+
+	// dis = Ax0+By0+C / denominator
+	// distance from the line to circle
+	double distance = fabs((line.a * this->x + line.b * this->y + line.c) / denominator);
+	if (distance - this->r * 1.0 < eps) {	// has intersect
+		double r_ = (d_x1 * x2_x1 + d_y1 * y2_y1) * 1.0 / norm;
+		double d_x4 = x2_x1 / denominator;
+		double d_y4 = y2_y1 / denominator;
+		double d_x3 = line.x1 + x2_x1 * r_;
+		double d_y3 = line.y1 + y2_y1 * r_;
+		double d_x5 = d_x3 - this->x;
+		double d_y5 = d_y3 - this->y;
+
+		if (fabs(distance - 1.0 * this->r) > eps) {
+			double base = sqrt(this_r_power - (d_x5 * d_x5 + d_y5 * d_y5));
+			res1.x = d_x3 + d_x4 * base;
+			if (!line.outRangeX(res1.x)) {
+				res1.y = d_y3 + d_y4 * base;
+				if (line.vertical && line.outRangeY(res1.y)) {
+					// out range
+				} else {
+					res_vector.push_back(res1);
+				}
+			}
+
+			res2.x = d_x3 - d_x4 * base;
+			if (!line.outRangeX(res2.x)) {
+				res2.y = d_y3 - d_y4 * base;
+				if (line.vertical && line.outRangeY(res2.y)) {
+					// out range
+				} else {
+					res_vector.push_back(res2);
+				}
+			}
+			return;
+		} else {
+			res1.x = d_x3;
+			if (!line.outRangeX(res1.x)) {
+				res1.y = d_y3;
+				if (line.vertical && line.outRangeY(res1.y)) {
+					// out range
+				} else {
+					res_vector.push_back(res1);
+				}
+			}
+			return;
+		}
+	}
+}
 
 
 void Circle::circleIntersect(const Circle& circle, vector<struct Position>& res_vector) {

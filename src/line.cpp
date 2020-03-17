@@ -34,7 +34,7 @@ void Line::	lineIntersect(Line& other_line, vector<struct Position>& res_vector)
 }
 
 
-// Rag Line
+// Ray Line
 
 rayLine::rayLine(long long x1, long long y1, long long x2, long long y2) : Line(x1, y1, x2, y2)
 {
@@ -56,7 +56,7 @@ rayLine::rayLine(long long x1, long long y1, long long x2, long long y2) : Line(
 	}
 }
 
-inline bool rayLine::outRangeX(long long x) {
+inline bool rayLine::outRangeX(double x) {
 	if ((x_forward == 1 && x < x_end1) || (x_forward == -1 && x > x_end1)) {
 		// For x_forward == 0, we use y_forward to check
 		return true;
@@ -64,7 +64,7 @@ inline bool rayLine::outRangeX(long long x) {
 	return false;
 }
 
-inline bool rayLine::outRangeY(long long y) {
+inline bool rayLine::outRangeY(double y) {
 	if ((y_forward == 1 && y < y_end1) || (y_forward == -1 && y > y_end1)) {
 		return true;
 	}
@@ -161,14 +161,14 @@ segLine::segLine(long long x1, long long y1, long long x2, long long y2) : Line(
 	this->vertical = (x_endLeft == x_endRight);
 }
 
-inline bool segLine::outRangeX(long long x) {
+inline bool segLine::outRangeX(double x) {
 	if (x < this->x_endLeft || x > x_endRight) {
 		return true;
 	}
 	return false;
 }
 
-inline bool segLine::outRangeY(long long y) {
+inline bool segLine::outRangeY(double y) {
 	if (y < y_endLeft || y > y_endRight) {
 		return true;
 	}

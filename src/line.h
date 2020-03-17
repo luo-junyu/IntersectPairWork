@@ -19,8 +19,8 @@ public:
 	rayLine(long long, long long, long long, long long);
 	void lineIntersect(Line&, vector<struct Position>&);
 	void rayLineIntersect(rayLine&, vector<struct Position>&);
-	inline bool outRangeX(long long x);
-	inline bool outRangeY(long long y);
+	inline bool outRangeX(double x);
+	inline bool outRangeY(double y);
 	long long x_end1, y_end1;
 	int x_forward, y_forward;
 };
@@ -32,8 +32,8 @@ public:
 	void lineIntersect(Line&, vector<struct Position>&);
 	void rayLineIntersect(rayLine&, vector<struct Position>&);
 	void segLineIntersect(segLine&, vector<struct Position>&);
-	inline bool outRangeX(long long x);
-	inline bool outRangeY(long long y);
+	inline bool outRangeX(double x);
+	inline bool outRangeY(double y);
 	long long x_endLeft, y_endLeft, x_endRight, y_endRight;
 	bool vertical;
 };

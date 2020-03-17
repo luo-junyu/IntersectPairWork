@@ -22,7 +22,10 @@ public:
 		this->y = 0;
 		this->r = 0;
 	}
-	void lineIntersect(const Line&, vector<struct Position>&);
+	void lineIntersect(Line&, vector<struct Position>&);
+	void rayLineIntersect(rayLine&, vector<struct Position>&);
+	void segLineIntersect(segLine&, vector<struct Position>&);
+
 	void circleIntersect(const Circle&, vector<struct Position>&);
 
 	long long x, y, r;
