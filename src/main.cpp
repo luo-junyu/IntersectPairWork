@@ -6,6 +6,8 @@
 #include <fstream>
 #include <algorithm>
 #include <set>
+#include "errorhandler.h"
+#include <string>
 
 const int debug_mood = 1;
 
@@ -25,17 +27,19 @@ int main(int argc, char** argv)
 
 	ifstream input;
 	ofstream output;
+	string ntmp;
 	int n;
 	char flag;
-	long long x1, y1, x2, y2;	// tmp var for line
-	long long x, y, r;			// tmp var for circle
+	//long long x1, y1, x2, y2;	// tmp var for line
+	//long long x, y, r;			// tmp var for circle
 	int line_num = 0;
 	int circle_num = 0;
 	int segLine_num = 0;
 	int rayLine_num = 0;
 
+	
 
-	if (debug_mood) {
+	/*if (debug_mood) {
 		input.open("input.txt");
 	} else {
 		for (int index = 0; index < argc; index++) {
@@ -47,30 +51,56 @@ int main(int argc, char** argv)
 				output.open(argv[index]);
 			}
 		}
-	}
+	}*/
+	CommandError(argc, argv);
+	input.open(argv[2], ios::in);
+	EmptyFileError(input);
 
+	input >> ntmp;
+	input.ignore();
+	NumError(ntmp);
+	n = atoi(ntmp.c_str());
 	
 
-	input >> n;
+	//input >> n;
 	for (int i = 0; i < n; i++) {
-		input >> flag;
+		string figuretmp;
+		Figure figure;
+		getline(input, figuretmp);
+		figure = FigureError(figuretmp);
+		long long x1, x2, y1, y2;
+		long long x, y, r;
+		flag = figure.shape;
+		if (flag != 'C') {
+			x1 = figure.a;
+			y1 = figure.b;
+			x2 = figure.c;
+			y2 = figure.d;
+		}
+		else {
+			x = figure.a;
+			y = figure.b;
+			r = figure.c;
+		}
+		
+		//input >> flag;
 		if (flag == 'L') {
-			input >> x1 >> y1 >> x2 >> y2;
+			//input >> x1 >> y1 >> x2 >> y2;
 			Line tmpLine(x1, y1, x2, y2);
 			lines.push_back(tmpLine);
 			line_num++;
 		} else if (flag == 'C') {
-			input >> x >> y >> r;	
+			//input >> x >> y >> r;	
 			Circle tmpCircle(x, y, r);
 			circles.push_back(tmpCircle);
 			circle_num++;
 		} else if (flag == 'S') {
-			input >> x1 >> y1 >> x2 >> y2;
+			//input >> x1 >> y1 >> x2 >> y2;
 			segLine tmpSegLine(x1, y1, x2, y2);
 			segLines.push_back(tmpSegLine);
 			segLine_num++;
 		} else if (flag == 'R') {
-			input >> x1 >> y1 >> x2 >> y2;
+			//input >> x1 >> y1 >> x2 >> y2;
 			rayLine tmprayLine(x1, y1, x2, y2);
 			rayLines.push_back(tmprayLine);
 			rayLine_num++;
