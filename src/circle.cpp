@@ -167,6 +167,7 @@ void Circle::segLineIntersect(segLine& line, vector<struct Position>& res_vector
 
 
 void Circle::circleIntersect(const Circle& circle, vector<struct Position>& res_vector) {
+
 	struct Position res1;
 	struct Position res2;
 	long long circle_r_power = circle.this_r_power;
@@ -176,11 +177,12 @@ void Circle::circleIntersect(const Circle& circle, vector<struct Position>& res_
 	long long x_power = this_x_power - 2 * this->x * circle.x + circle_x_power;
 	long long y_power = this_y_power - 2 * this->y * circle.y + circle_y_power;
 	long long r_power = this_r_power + 2 * this->r * circle.r + circle_r_power;
+	long long r_neg_power = this_r_power - 2 * this->r * circle.r + circle_r_power;
 	long long x_y_power = x_power + y_power;
 	if (x_y_power == 0) {
 		return;
 	}
-	long long sigma = (r_power - x_power - y_power) * (x_y_power - r_power);
+	long long sigma = (r_power - x_power - y_power) * (x_y_power - r_neg_power);
 	if (sigma < 0) {
 		return;
 	} 

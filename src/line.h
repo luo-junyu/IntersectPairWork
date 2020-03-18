@@ -22,6 +22,7 @@ public:
 	inline bool outRangeX(double x);
 	inline bool outRangeY(double y);
 	long long x_end1, y_end1;
+	double x_end1_sub_eps, x_end1_add_eps, y_end1_sub_eps, y_end1_add_eps;
 	int x_forward, y_forward;
 };
 
@@ -35,6 +36,8 @@ public:
 	inline bool outRangeX(double x);
 	inline bool outRangeY(double y);
 	long long x_endLeft, y_endLeft, x_endRight, y_endRight;
+	double x_endLeft_sub_eps, x_endLeft_add_eps, y_endLeft_sub_eps, y_endLeft_add_eps, 
+		x_endRight_sub_eps, x_endRight_add_eps, y_endRight_add_eps, y_endRight_sub_eps;
 	bool vertical;
 };
 

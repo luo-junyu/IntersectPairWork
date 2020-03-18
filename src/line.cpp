@@ -40,6 +40,10 @@ rayLine::rayLine(long long x1, long long y1, long long x2, long long y2) : Line(
 {
 	this->x_end1 = x1;
 	this->y_end1 = y1;
+	this->x_end1_add_eps = x1 + eps;
+	this->x_end1_sub_eps = x1 - eps;
+	this->y_end1_add_eps = y1 + eps;
+	this->y_end1_sub_eps = y1 - eps;
 	if (x2 > x1) {
 		this->x_forward = 1;
 	} else if (x2 == x1) {
@@ -57,7 +61,7 @@ rayLine::rayLine(long long x1, long long y1, long long x2, long long y2) : Line(
 }
 
 inline bool rayLine::outRangeX(double x) {
-	if ((x_forward == 1 && x < x_end1) || (x_forward == -1 && x > x_end1)) {
+	if ((x_forward == 1 && x < x_end1_sub_eps) || (x_forward == -1 && x > x_end1_add_eps)) {
 		// For x_forward == 0, we use y_forward to check
 		return true;
 	}
@@ -65,7 +69,7 @@ inline bool rayLine::outRangeX(double x) {
 }
 
 inline bool rayLine::outRangeY(double y) {
-	if ((y_forward == 1 && y < y_end1) || (y_forward == -1 && y > y_end1)) {
+	if ((y_forward == 1 && y < y_end1_sub_eps) || (y_forward == -1 && y > y_end1_add_eps)) {
 		return true;
 	}
 	return false;
@@ -159,17 +163,25 @@ segLine::segLine(long long x1, long long y1, long long x2, long long y2) : Line(
 		this->y_endRight = y1;
 	}
 	this->vertical = (x_endLeft == x_endRight);
+	this->x_endLeft_sub_eps = this->x_endLeft - eps;
+	this->x_endLeft_add_eps = this->x_endLeft + eps;
+	this->y_endLeft_sub_eps = this->y_endLeft - eps;
+	this->y_endLeft_add_eps = this->y_endLeft + eps;
+	this->x_endRight_sub_eps = this->x_endRight - eps;
+	this->x_endRight_add_eps = this->x_endRight + eps;
+	this->y_endRight_sub_eps = this->y_endRight - eps;
+	this->y_endRight_add_eps = this->y_endRight + eps;
 }
 
 inline bool segLine::outRangeX(double x) {
-	if (x < this->x_endLeft || x > x_endRight) {
+	if (x < this->x_endLeft_sub_eps || x > this->x_endRight_add_eps) {
 		return true;
 	}
 	return false;
 }
 
 inline bool segLine::outRangeY(double y) {
-	if (y < y_endLeft || y > y_endRight) {
+	if (y < this->y_endLeft_sub_eps || y > this->y_endRight_add_eps) {
 		return true;
 	}
 	return false;

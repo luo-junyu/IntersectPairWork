@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <set>
 
-const int debug_mood = 1;
+const int debug_mood = 0;
 
 using namespace std;
 
