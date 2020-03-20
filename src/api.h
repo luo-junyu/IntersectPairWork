@@ -10,27 +10,20 @@
 
 using namespace std;
 
+struct Figure { std::string shape;    long long a;    long long b;    long long c;    long long d; };
+
 class IntersectionCounter {
 public:
 	IntersectionCounter();
-
-	tuple<double, double, double, double> getMapRange();
-
-	void deleteLineIndex(int);
-	void deleteCircleIndex(int);
-	void deleteRayLineIndex(int);
-	void deleteSegLineIndex(int);
-
-	void addGraphicItem(string);
-	void addGraphicFile(string);
+	void setFigures(vector<int>);
+	void setMapRange();
 	vector<struct Position> getIntersects();
-
-	vector<struct Position> getIntersects(vector<Line>&, vector<rayLine>&, vector<segLine>&, vector<Circle>&);
 
 	vector<Line> getLines();
 	vector<rayLine> getRayLines();
 	vector<segLine> getSegLines();
 	vector<Circle> getCircles();
+	vector<double> getFigures();
 
 private:
 	void update();
@@ -38,7 +31,9 @@ private:
 	vector<rayLine> rayLines;
 	vector<segLine> segLines;
 	vector<Circle> circles;
+	double x_max, x_min, y_max, y_min;
 	vector<struct Position> intersects;
 };
+
 
 #endif // !API__H
