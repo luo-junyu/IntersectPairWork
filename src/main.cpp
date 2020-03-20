@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <set>
 
-const int debug_mood = 0;
+const int debug_mood = 1;
 
 using namespace std;
 
@@ -95,16 +95,16 @@ int main(int argc, char** argv)
 		for (int j = i + 1; j < rayLine_num; j++) {
 			rayLine& line1 = rayLines[i];
 			rayLine& line2 = rayLines[j];
-			line1.lineIntersect(line2, points);
+			line1.rayLineIntersect(line2, points);
 		}
 	}
 
-	// rayLine & rayLine
+	// segLine & segLine
 	for (int i = 0; i < segLine_num; i++) {
 		for (int j = i + 1; j < segLine_num; j++) {
 			segLine& line1 = segLines[i];
 			segLine& line2 = segLines[j];
-			line1.lineIntersect(line2, points);
+			line1.segLineIntersect(line2, points);
 		}
 	}
 
@@ -132,9 +132,9 @@ int main(int argc, char** argv)
 
 	for (int i = 0; i < rayLine_num; i++) {
 		for (int j = 0; j < segLine_num; j++) {
-			segLine& line1 = segLines[i];
-			rayLine& line2 = rayLines[j];
-			line1.lineIntersect(line2, points);
+			rayLine& line1 = rayLines[i];
+			segLine& line2 = segLines[j];
+			line2.rayLineIntersect(line1, points);
 		}
 	}
 
@@ -182,9 +182,9 @@ int main(int argc, char** argv)
 	sort(points.begin(), points.end(), posCompare);
 	auto points_end = unique(points.begin(), points.end(), posEqual);
 
-	if (debug_mood) {
-		cout << points_end - points.begin() << endl;
-	}
+	// if (debug_mood) {
+	cout << points_end - points.begin() << endl;
+	// }
 
 	output << points_end - points.begin();
 	output.close();
