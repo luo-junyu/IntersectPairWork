@@ -47,7 +47,7 @@ void IntersectionCounter::setMapRange() {
 }
 
 void IntersectionCounter::setFigures(vector<int> numArray) {
-	for (int index = 0; index < numArray.size(); index += 5) {
+	for (int index = 0; index < (int)numArray.size(); index += 5) {
 		int flag = numArray[index];
 		if (flag == 1) {			// Line
 			Line tmpLine(numArray[index+1], numArray[index + 2], numArray[index + 3], numArray[index + 4]);
@@ -202,8 +202,8 @@ vector<double> IntersectionCounter::getFigures() {
 		} else {
 			line_x_right = x_max;
 			line_x_left = x_min;
-			line_y_right = (line.c * 1. - line.a * x_max) / line.b;
-			line_y_left = (line.c * 1. - line.a * x_min) / line.b;
+			line_y_right = (line.c * -1. - line.a * x_max) / line.b;
+			line_y_left = (line.c * -1. - line.a * x_min) / line.b;
 		}
 		res.push_back(flag);
 		res.push_back(line_x_right);
@@ -217,12 +217,12 @@ vector<double> IntersectionCounter::getFigures() {
 		double line_y_right, line_y_left;
 		if (line.x_forward == 1) {
 			line_x_right = x_max;
-			line_y_right = (line.c * 1. - line.a * x_max) / line.b;
+			line_y_right = (line.c * -1. - line.a * x_max) / line.b;
 			line_x_left = line.x_end1;
 			line_y_left = line.y_end1;
 		} else if (line.x_forward == -1) {
 			line_x_left = x_min;
-			line_y_left = (line.c * 1. - line.a * x_min) / line.b;
+			line_y_left = (line.c * -1. - line.a * x_min) / line.b;
 			line_x_right = line.x_end1;
 			line_y_right = line.y_end1;
 		} else if (line.x_forward == 0) {
