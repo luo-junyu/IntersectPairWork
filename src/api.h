@@ -10,14 +10,13 @@
 
 using namespace std;
 
-struct Figure { std::string shape;    long long a;    long long b;    long long c;    long long d; };
-
 class IntersectionCounter {
 public:
 	IntersectionCounter();
 	void setFigures(vector<int>);
 	void setMapRange();
-	vector<struct Position> getIntersects();
+	vector<double> getIntersects();
+	void reset();
 
 	vector<Line> getLines();
 	vector<rayLine> getRayLines();
