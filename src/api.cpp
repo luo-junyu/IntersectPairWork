@@ -47,7 +47,7 @@ void IntersectionCounter::setMapRange() {
 }
 
 void IntersectionCounter::setFigures(vector<int> numArray) {
-	for (int index = 0; index < numArray.size(); index += 5) {
+	for (int index = 0; index < (int)numArray.size(); index += 5) {
 		int flag = numArray[index];
 		if (flag == 1) {			// Line
 			Line tmpLine(numArray[index+1], numArray[index + 2], numArray[index + 3], numArray[index + 4]);
