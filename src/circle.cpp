@@ -170,7 +170,7 @@ ErrorType Circle::segLineIntersect(segLine& line, vector<struct Position>& res_v
 
 ErrorType Circle::circleIntersect(const Circle& circle, vector<struct Position>& res_vector) {
 
-	if (this->x == circle.x || this->y == circle.y || this->r == circle.r) {
+	if (this->x == circle.x && this->y == circle.y && this->r == circle.r) {
 		return (ErrorType::SameCircle);
 	}
 
