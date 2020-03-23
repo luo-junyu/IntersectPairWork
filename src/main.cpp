@@ -124,7 +124,10 @@ int main(int argc, char** argv)
 		for (int j = i + 1; j < line_num; j++) {
 			Line& line1 = lines[i];
 			Line& line2 = lines[j];
-			line1.lineIntersect(line2, points);
+			ErrorType err = line1.lineIntersect(line2, points);
+			if (err != ErrorType::NoError) {
+				HandleError(err);
+			}
 		}
 	}
 
@@ -133,7 +136,10 @@ int main(int argc, char** argv)
 		for (int j = i + 1; j < rayLine_num; j++) {
 			rayLine& line1 = rayLines[i];
 			rayLine& line2 = rayLines[j];
-			line1.rayLineIntersect(line2, points);
+			ErrorType err = line1.rayLineIntersect(line2, points);
+			if (err != ErrorType::NoError) {
+				HandleError(err);
+			}
 		}
 	}
 
@@ -142,7 +148,10 @@ int main(int argc, char** argv)
 		for (int j = i + 1; j < segLine_num; j++) {
 			segLine& line1 = segLines[i];
 			segLine& line2 = segLines[j];
-			line1.segLineIntersect(line2, points);
+			ErrorType err = line1.segLineIntersect(line2, points);
+			if (err != ErrorType::NoError) {
+				HandleError(err);
+			}
 		}
 	}
 
@@ -152,7 +161,10 @@ int main(int argc, char** argv)
 		for (int j = 0; j < line_num; j++) {
 			rayLine& line1 = rayLines[i];
 			Line& line2 = lines[j];
-			line1.lineIntersect(line2, points);
+			ErrorType err = line1.lineIntersect(line2, points);
+			if (err != ErrorType::NoError) {
+				HandleError(err);
+			}
 		}
 	}
 
@@ -162,7 +174,10 @@ int main(int argc, char** argv)
 		for (int j = 0; j < line_num; j++) {
 			segLine& line1 = segLines[i];
 			Line& line2 = lines[j];
-			line1.lineIntersect(line2, points);
+			ErrorType err = line1.lineIntersect(line2, points);
+			if (err != ErrorType::NoError) {
+				HandleError(err);
+			}
 		}
 	}
 
@@ -172,7 +187,10 @@ int main(int argc, char** argv)
 		for (int j = 0; j < segLine_num; j++) {
 			rayLine& line1 = rayLines[i];
 			segLine& line2 = segLines[j];
-			line2.rayLineIntersect(line1, points);
+			ErrorType err = line2.rayLineIntersect(line1, points);
+			if (err != ErrorType::NoError) {
+				HandleError(err);
+			}
 		}
 	}
 
@@ -182,7 +200,10 @@ int main(int argc, char** argv)
 		for (int j = 0; j < circle_num; j++) {
 			Line& tmpLine = lines[i];
 			Circle& tmpCircle = circles[j];
-			tmpCircle.lineIntersect(tmpLine, points);
+			ErrorType err = tmpCircle.lineIntersect(tmpLine, points);
+			if (err != ErrorType::NoError) {
+				HandleError(err);
+			}
 		}
 	}
 
@@ -192,7 +213,10 @@ int main(int argc, char** argv)
 		for (int j = 0; j < circle_num; j++) {
 			rayLine& tmpLine = rayLines[i];
 			Circle& tmpCircle = circles[j];
-			tmpCircle.rayLineIntersect(tmpLine, points);
+			ErrorType err = tmpCircle.rayLineIntersect(tmpLine, points);
+			if (err != ErrorType::NoError) {
+				HandleError(err);
+			}
 		}
 	}
 
@@ -202,7 +226,10 @@ int main(int argc, char** argv)
 		for (int j = 0; j < circle_num; j++) {
 			segLine& tmpLine = segLines[i];
 			Circle& tmpCircle = circles[j];
-			tmpCircle.segLineIntersect(tmpLine, points);
+			ErrorType err = tmpCircle.segLineIntersect(tmpLine, points);
+			if (err != ErrorType::NoError) {
+				HandleError(err);
+			}
 		}
 	}
 
@@ -212,7 +239,10 @@ int main(int argc, char** argv)
 		for (int j = i + 1; j < circle_num; j++) {
 			Circle& circle1 = circles[i];
 			Circle& circle2 = circles[j];
-			circle1.circleIntersect(circle2, points);
+			ErrorType err = circle1.circleIntersect(circle2, points);
+			if (err != ErrorType::NoError) {
+				HandleError(err);
+			}
 		}
 	}
 

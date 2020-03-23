@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CppUnitTest.h"
 #include <vector>
 #include "../IntersectPairWork/src/intersect.h"
@@ -56,7 +56,8 @@ namespace CircleTest
 			vector<struct Position> res;
 			Circle c1(0, 0, 5);
 			Circle c2(0, 0, 5);
-			c1.circleIntersect(c2, res);
+			ErrorType err = c1.circleIntersect(c2, res);
+			Assert::IsTrue(err == ErrorType::SameCircle);
 		}
 
 	};

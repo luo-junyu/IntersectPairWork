@@ -16,13 +16,13 @@ Line::Line(long long x1, long long y1, long long x2, long long y2)
 }
 
 
-void Line::	lineIntersect(Line& other_line, vector<struct Position>& res_vector) {
+ErrorType Line::lineIntersect(Line& other_line, vector<struct Position>& res_vector) {
 	long long lower = this->a * other_line.b - this->b * other_line.a;
 	if (lower == 0) {
 		if (this->a * other_line.x1 + this->b * other_line.y1 + this->c == 0) {
-			HandleError(ErrorType::SameLine);
+			return ErrorType::SameLine;
 		}
-		return;
+		return ErrorType::NoError;
 	}
 	long long x_upper = this->b * other_line.c - other_line.b * this->c;
 	long long y_upper = other_line.a * this->c - this->a * other_line.c;
@@ -33,7 +33,7 @@ void Line::	lineIntersect(Line& other_line, vector<struct Position>& res_vector)
 	res.x = x;
 	res.y = y;
 	res_vector.push_back(res);
-	return;
+	return ErrorType::NoError;
 }
 
 
@@ -80,28 +80,28 @@ inline bool rayLine::outRangeY(double y) {
 
 
 /* rayLine intersect with Line */
-void rayLine::lineIntersect(Line& other_line, vector<struct Position>& res_vector)
+ErrorType rayLine::lineIntersect(Line& other_line, vector<struct Position>& res_vector)
 {
 	long long lower = this->a * other_line.b - this->b * other_line.a;
 	if (lower == 0) {
 		if (this->a * other_line.x1 + this->b * other_line.y1 + this->c == 0) {
-			HandleError(ErrorType::SameLine);
+			return ErrorType::SameLine;
 		}
-		return;
+		return ErrorType::NoError;
 	}
 
 	long long x_upper = this->b * other_line.c - other_line.b * this->c;
 	double x = x_upper * 1.0 / lower;
 
 	if (outRangeX(x)) {
-		return;
+		return ErrorType::NoError;
 	}
 
 	long long y_upper = other_line.a * this->c - this->a * other_line.c;
 	double y = y_upper * 1.0 / lower;
 	if (x_forward == 0) {
 		if (outRangeY(y)) {
-			return;
+			return ErrorType::NoError;
 		}
 	}
 
@@ -109,11 +109,11 @@ void rayLine::lineIntersect(Line& other_line, vector<struct Position>& res_vecto
 	res.x = x;
 	res.y = y;
 	res_vector.push_back(res);
-	return;
+	return ErrorType::NoError;
 }
 
 /* rayLine intersect with rayLine */
-void rayLine::rayLineIntersect(rayLine& other_line, vector<struct Position>& res_vector)
+ErrorType rayLine::rayLineIntersect(rayLine& other_line, vector<struct Position>& res_vector)
 {
 	long long lower = this->a * other_line.b - this->b * other_line.a;
 
@@ -129,20 +129,20 @@ void rayLine::rayLineIntersect(rayLine& other_line, vector<struct Position>& res
 					res.x = this->x_end1;
 					res.y = this->x_end1;
 					res_vector.push_back(res);
-					return;
+					return ErrorType::NoError;
 				} else if ((this->x_forward == -1 && other_line.x_end1 < this->x_end1) ||
 					(this->x_forward == 1 && other_line.x_end1 > this->x_end1) ||
 					(this->x_forward == 0 && ((this->y_forward == 1 && other_line.y_end1 > this->y_end1) ||
 					(this->y_forward == -1 && other_line.y_end1 < this->y_end1)))) {
-					HandleError(ErrorType::SameLine);
+					return ErrorType::SameLine;
 				} else {
 					// not error
 				}
 			} else {
-				HandleError(ErrorType::SameLine);
+				return (ErrorType::SameLine);
 			}
 		}
-		return;
+		return ErrorType::NoError;
 	}
 
 	long long x_upper = this->b * other_line.c - other_line.b * this->c;
@@ -150,7 +150,7 @@ void rayLine::rayLineIntersect(rayLine& other_line, vector<struct Position>& res
 	double x = x_upper * 1.0 / lower;
 
 	if ((this->outRangeX(x)) || (other_line.outRangeX(x))) {
-		return;
+		return ErrorType::NoError;
 	}
 
 	long long y_upper = other_line.a * this->c - this->a * other_line.c;
@@ -158,13 +158,13 @@ void rayLine::rayLineIntersect(rayLine& other_line, vector<struct Position>& res
 
 	if (this->x_forward == 0) {
 		if (this->outRangeY(y)) {
-			return;
+			return ErrorType::NoError;
 		}
 	}
 
 	if (other_line.x_forward == 0) {
 		if (other_line.outRangeY(y)) {
-			return;
+			return ErrorType::NoError;
 		}
 	}
 
@@ -172,7 +172,7 @@ void rayLine::rayLineIntersect(rayLine& other_line, vector<struct Position>& res
 	res.x = x;
 	res.y = y;
 	res_vector.push_back(res);
-	return;
+	return ErrorType::NoError;
 }
 
 
@@ -220,21 +220,21 @@ inline bool segLine::outRangeY(double y) {
 }
 
 /* segLine intersect with Line */
-void segLine::lineIntersect(Line& other_line, vector<struct Position>& res_vector)
+ErrorType segLine::lineIntersect(Line& other_line, vector<struct Position>& res_vector)
 {
 	long long lower = this->a * other_line.b - this->b * other_line.a;
 	if (lower == 0) {
 		if (this->a * other_line.x1 + this->b * other_line.y1 + this->c == 0) {
-			HandleError(ErrorType::SameLine);
+			return (ErrorType::SameLine);
 		}
-		return;
+		return ErrorType::NoError;
 	}
 
 	long long x_upper = this->b * other_line.c - other_line.b * this->c;
 	double x = x_upper * 1.0 / lower;
 
 	if (outRangeX(x)) {
-		return;
+		return ErrorType::NoError;
 	}
 
 	long long y_upper = other_line.a * this->c - this->a * other_line.c;
@@ -242,7 +242,7 @@ void segLine::lineIntersect(Line& other_line, vector<struct Position>& res_vecto
 
 	if (this->vertical) {
 		if (outRangeY(y)) {
-			return;
+			return ErrorType::NoError;
 		}
 	}
 
@@ -250,11 +250,11 @@ void segLine::lineIntersect(Line& other_line, vector<struct Position>& res_vecto
 	res.x = x;
 	res.y = y;
 	res_vector.push_back(res);
-	return;
+	return ErrorType::NoError;
 }
 
 /* segLine intersect with rayLine */
-void segLine::rayLineIntersect(rayLine& other_line, vector<struct Position>& res_vector)
+ErrorType segLine::rayLineIntersect(rayLine& other_line, vector<struct Position>& res_vector)
 {
 	long long lower = this->a * other_line.b - this->b * other_line.a;
 
@@ -267,9 +267,9 @@ void segLine::rayLineIntersect(rayLine& other_line, vector<struct Position>& res
 					res.x = other_line.x_end1;
 					res.y = other_line.y_end1;
 					res_vector.push_back(res);
-					return;
+					return ErrorType::NoError;
 				} else if (this->x_endRight > other_line.x_end1) {
-					HandleError(ErrorType::SameLine);
+					return (ErrorType::SameLine);
 				} 
 			} else if (other_line.x_forward == -1) {
 				if (this->x_endLeft == other_line.x_end1) {
@@ -277,9 +277,9 @@ void segLine::rayLineIntersect(rayLine& other_line, vector<struct Position>& res
 					res.x = other_line.x_end1;
 					res.y = other_line.y_end1;
 					res_vector.push_back(res);
-					return;
+					return ErrorType::NoError;
 				} else if (this->x_endLeft < other_line.x_end1) {
-					HandleError(ErrorType::SameLine);
+					return (ErrorType::SameLine);
 				}
 			} else if (other_line.x_forward == 0 && other_line.y_forward == 1) {
 				if (this->y_endRight == other_line.y_end1) {
@@ -287,9 +287,9 @@ void segLine::rayLineIntersect(rayLine& other_line, vector<struct Position>& res
 					res.x = other_line.x_end1;
 					res.y = other_line.y_end1;
 					res_vector.push_back(res);
-					return;
+					return ErrorType::NoError;
 				} else if (this->y_endRight > other_line.y_end1) {
-					HandleError(ErrorType::SameLine);
+					return (ErrorType::SameLine);
 				}
 			} else if (other_line.x_forward == 0 && other_line.y_forward == -1) {
 				if (this->y_endLeft == other_line.y_end1) {
@@ -297,25 +297,25 @@ void segLine::rayLineIntersect(rayLine& other_line, vector<struct Position>& res
 					res.x = other_line.x_end1;
 					res.y = other_line.y_end1;
 					res_vector.push_back(res);
-					return;
+					return ErrorType::NoError;
 				} else if (this->y_endLeft < other_line.y_end1) {
-					HandleError(ErrorType::SameLine);
+					return (ErrorType::SameLine);
 				}
 			}
 
 		}
-		return;
+		return ErrorType::NoError;
 	}
 
 	if (lower == 0) {
-		return;
+		return ErrorType::NoError;
 	}
 
 	long long x_upper = this->b * other_line.c - other_line.b * this->c;
 	double x = x_upper * 1.0 / lower;
 
 	if (this->outRangeX(x) || other_line.outRangeX(x)) {
-		return;
+		return ErrorType::NoError;
 	}
 
 	long long y_upper = other_line.a * this->c - this->a * other_line.c;
@@ -323,13 +323,13 @@ void segLine::rayLineIntersect(rayLine& other_line, vector<struct Position>& res
 
 	if (this->vertical) {
 		if (this->outRangeY(y)) {
-			return;
+			return ErrorType::NoError;
 		}
 	}
 
 	if (other_line.x_forward == 0) {
 		if (other_line.outRangeY(y)) {
-			return;
+			return ErrorType::NoError;
 		}
 	}
 
@@ -337,11 +337,11 @@ void segLine::rayLineIntersect(rayLine& other_line, vector<struct Position>& res
 	res.x = x;
 	res.y = y;
 	res_vector.push_back(res);
-	return;
+	return ErrorType::NoError;
 }
 
 /* segLine intersect with rayLine */
-void segLine::segLineIntersect(segLine& other_line, vector<struct Position>& res_vector)
+ErrorType segLine::segLineIntersect(segLine& other_line, vector<struct Position>& res_vector)
 {
 	long long lower = this->a * other_line.b - this->b * other_line.a;
 	if (lower == 0) {
@@ -352,16 +352,16 @@ void segLine::segLineIntersect(segLine& other_line, vector<struct Position>& res
 					res.x = this->x_endLeft;
 					res.y = this->y_endLeft;
 					res_vector.push_back(res);
-					return;
+					return ErrorType::NoError;
 				} else if (this->y_endRight == other_line.y_endLeft) {
 					struct Position res;
 					res.x = this->x_endLeft;
 					res.y = this->y_endRight;
 					res_vector.push_back(res);
-					return;
+					return ErrorType::NoError;
 				} else if ((this->y1 >= other_line.y_endLeft && this->y1 <= other_line.y_endRight) ||
 					(this->y2 >= other_line.y_endLeft && this->y2 <= other_line.y_endRight)) {
-					HandleError(ErrorType::SameLine);
+					return (ErrorType::SameLine);
 				}
 			} else {
 				if (this->x_endLeft == other_line.x_endRight) {
@@ -373,7 +373,7 @@ void segLine::segLineIntersect(segLine& other_line, vector<struct Position>& res
 						res.y = this->y2;
 					}
 					res_vector.push_back(res);
-					return;
+					return ErrorType::NoError;
 				} else if (this->x_endRight == other_line.x_endLeft) {
 					struct Position res;
 					res.x = this->x_endRight;
@@ -383,21 +383,21 @@ void segLine::segLineIntersect(segLine& other_line, vector<struct Position>& res
 						res.y = this->y2;
 					}
 					res_vector.push_back(res);
-					return;
+					return ErrorType::NoError;
 				} else if ((this->x1 >= other_line.x_endLeft && this->x1 <= other_line.x_endRight) || 
 					(this->x2 >= other_line.x_endLeft && this->x2 <= other_line.x_endRight)) {
-					HandleError(ErrorType::SameLine);
+					return (ErrorType::SameLine);
 				}
 			}
 		}
-		return;
+		return ErrorType::NoError;
 	}
 
 	long long x_upper = this->b * other_line.c - other_line.b * this->c;
 	double x = x_upper * 1.0 / lower;
 
 	if (this->outRangeX(x) || other_line.outRangeX(x)) {
-		return;
+		return ErrorType::NoError;
 	}
 
 	long long y_upper = other_line.a * this->c - this->a * other_line.c;
@@ -405,13 +405,13 @@ void segLine::segLineIntersect(segLine& other_line, vector<struct Position>& res
 
 	if (this->vertical) {
 		if (this->outRangeY(y)) {
-			return;
+			return ErrorType::NoError;
 		}
 	}
 
 	if (other_line.vertical) {
 		if (other_line.outRangeY(y)) {
-			return;
+			return ErrorType::NoError;
 		}
 	}
 
@@ -419,5 +419,5 @@ void segLine::segLineIntersect(segLine& other_line, vector<struct Position>& res
 	res.x = x;
 	res.y = y;
 	res_vector.push_back(res);
-	return;
+	return ErrorType::NoError;
 }

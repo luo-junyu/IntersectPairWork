@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CppUnitTest.h"
 #include <vector>
 #include "../IntersectPairWork/src/intersect.h"
@@ -30,7 +30,8 @@ namespace LineTest
 			vector<struct Position> res;
 			Line line1(1, 1, 1, 0);
 			Line line2(1, 2, 1, 3);
-			line2.lineIntersect(line1, res);
+			ErrorType err = line2.lineIntersect(line1, res);
+			Assert::IsTrue(err == ErrorType::SameLine);
 		}
 	};
 	TEST_CLASS(LineAndRayLine)
@@ -124,7 +125,8 @@ namespace LineTest
 			vector<struct Position> res;
 			Line line1(1, 1, 1, 0);
 			rayLine line2(1, 2, 1, 3);
-			line2.lineIntersect(line1, res);
+			ErrorType err = line2.lineIntersect(line1, res);
+			Assert::IsTrue(err == ErrorType::SameLine);
 		}
 	};
 
@@ -189,7 +191,8 @@ namespace LineTest
 			vector<struct Position> res;
 			Line line1(0, 1, 1, 1);
 			segLine line2(0, 1, 1, 1);
-			line2.lineIntersect(line1, res);
+			ErrorType err = line2.lineIntersect(line1, res);
+			Assert::IsTrue(err == ErrorType::SameLine);
 		}
 	};
 
@@ -218,7 +221,7 @@ namespace LineTest
 		TEST_METHOD(RayLineAndRayLine_3)
 		{
 			rayLine line1(0, 0, 2, 2);
-			/* // TODO: Ìí¼ÓÉäÏßÆ½ÐÐµÄÇé¿ö
+			/* // TODO: æ·»åŠ å°„çº¿å¹³è¡Œçš„æƒ…å†µ
 			rayLine line2(0, 0, -1, -1);
 			vector<struct Position> res;
 			line2.rayLineIntersect(line1, res);
@@ -360,7 +363,8 @@ namespace LineTest
 			vector<struct Position> res;
 			rayLine line1(0, 0, -1, 1);
 			segLine line2(-1, 1, 1, -1);
-			line2.rayLineIntersect(line1, res);
+			ErrorType err = line2.rayLineIntersect(line1, res);
+			Assert::IsTrue(err == ErrorType::SameLine);
 		}
 
 		TEST_METHOD(RayLineAndSegLine_10)
@@ -368,7 +372,8 @@ namespace LineTest
 			vector<struct Position> res;
 			rayLine line1(0, 0, 1, 1);
 			segLine line2(-1, -1, 1, 1);
-			line2.rayLineIntersect(line1, res);
+			ErrorType err = line2.rayLineIntersect(line1, res);
+			Assert::IsTrue(err == ErrorType::SameLine);
 		}
 
 	};
@@ -397,7 +402,8 @@ namespace LineTest
 			vector<struct Position> res;
 			segLine line1(0, 0, 2, 2);
 			segLine line2(0, 0, 1, 1);
-			line2.segLineIntersect(line1, res);
+			ErrorType err = line2.segLineIntersect(line1, res);
+			Assert::IsTrue(err == ErrorType::SameLine);
 		}
 
 		TEST_METHOD(SegLineAndSegLine_4)
@@ -450,7 +456,8 @@ namespace LineTest
 			vector<struct Position> res;
 			segLine line1(0, 0, 0, 5);
 			segLine line2(0, -1, 0, 2);
-			line2.segLineIntersect(line1, res);
+			ErrorType err = line2.segLineIntersect(line1, res);
+			Assert::IsTrue(err == ErrorType::SameLine);
 		}
 
 	};

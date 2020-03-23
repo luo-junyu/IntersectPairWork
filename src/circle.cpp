@@ -1,6 +1,6 @@
 #include "circle.h"
 
-void Circle::lineIntersect(Line& line, vector<struct Position>& res_vector) {
+ErrorType Circle::lineIntersect(Line& line, vector<struct Position>& res_vector) {
 	struct Position res1;
 	struct Position res2;
 
@@ -32,18 +32,18 @@ void Circle::lineIntersect(Line& line, vector<struct Position>& res_vector) {
 			res2.y = d_y3 - d_y4 * base;
 			res_vector.push_back(res1);
 			res_vector.push_back(res2);
-			return;
+			return ErrorType::NoError;
 		} else {
 			res1.x = d_x3;
 			res1.y = d_y3;
 			res_vector.push_back(res1);
-			return;
+			return ErrorType::NoError;
 		}
 	} 
 }
 
 
-void Circle::rayLineIntersect(rayLine& line, vector<struct Position>& res_vector) {
+ErrorType Circle::rayLineIntersect(rayLine& line, vector<struct Position>& res_vector) {
 	struct Position res1;
 	struct Position res2;
 
@@ -88,7 +88,7 @@ void Circle::rayLineIntersect(rayLine& line, vector<struct Position>& res_vector
 					res_vector.push_back(res2);
 				}
 			}
-			return;
+			return ErrorType::NoError;
 		} else {
 			res1.x = d_x3;
 			if (!line.outRangeX(res1.x)) {
@@ -99,12 +99,13 @@ void Circle::rayLineIntersect(rayLine& line, vector<struct Position>& res_vector
 					res_vector.push_back(res1);
 				}
 			}
-			return;
+			return ErrorType::NoError;
 		}
 	}
+	return ErrorType::NoError;
 }
 
-void Circle::segLineIntersect(segLine& line, vector<struct Position>& res_vector) {
+ErrorType Circle::segLineIntersect(segLine& line, vector<struct Position>& res_vector) {
 	struct Position res1;
 	struct Position res2;
 
@@ -149,7 +150,7 @@ void Circle::segLineIntersect(segLine& line, vector<struct Position>& res_vector
 					res_vector.push_back(res2);
 				}
 			}
-			return;
+			return ErrorType::NoError;
 		} else {
 			res1.x = d_x3;
 			if (!line.outRangeX(res1.x)) {
@@ -160,16 +161,17 @@ void Circle::segLineIntersect(segLine& line, vector<struct Position>& res_vector
 					res_vector.push_back(res1);
 				}
 			}
-			return;
+			return ErrorType::NoError;
 		}
 	}
+	return ErrorType::NoError;
 }
 
 
-void Circle::circleIntersect(const Circle& circle, vector<struct Position>& res_vector) {
+ErrorType Circle::circleIntersect(const Circle& circle, vector<struct Position>& res_vector) {
 
 	if (this->x == circle.x || this->y == circle.y || this->r == circle.r) {
-		HandleError(ErrorType::SameCircle);
+		return (ErrorType::SameCircle);
 	}
 
 	struct Position res1;
@@ -184,11 +186,11 @@ void Circle::circleIntersect(const Circle& circle, vector<struct Position>& res_
 	long long r_neg_power = this_r_power - 2 * this->r * circle.r + circle_r_power;
 	long long x_y_power = x_power + y_power;
 	if (x_y_power == 0) {
-		return;
+		return ErrorType::NoError;
 	}
 	long long sigma = (r_power - x_power - y_power) * (x_y_power - r_neg_power);
 	if (sigma < 0) {
-		return;
+		return ErrorType::NoError;
 	} 
 	
 	double sigma_sqrt = sqrt((double)sigma);
@@ -208,4 +210,5 @@ void Circle::circleIntersect(const Circle& circle, vector<struct Position>& res_
 	res2.y = (subs3 - sigma_sqrt * this->x + sigma_sqrt * circle.x) / (2 * x_y_power);
 	res_vector.push_back(res1);
 	res_vector.push_back(res2);
+	return ErrorType::NoError;
 }
