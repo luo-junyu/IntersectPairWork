@@ -1,9 +1,13 @@
-#pragma once
+#ifndef ERRORHANDLER__H
+#define ERRORHANDLER__H
+
+#include <iostream>
+using namespace std;
 
 enum class ErrorType {
 	NoError, CommandNum, CommandFormat, FileNotExist,
 	EmptyFile, NumOutOfRange, AssertNum,
-	FigureOutOfRange, LinePointOverlap, FigureFormat
+	FigureOutOfRange, LinePointOverlap, FigureFormat, SameLine, SameCircle,
 };
 
 struct CorrectFigure {
@@ -22,3 +26,5 @@ ErrorType BondError(long long num, int low, int high);
 ErrorType OverlapError(long long a, long long b, long long c, long long d);
 CorrectFigure FigureError(std::string figure);
 void HandleError(ErrorType errortype);
+
+#endif // !ERRORHANDLER__H

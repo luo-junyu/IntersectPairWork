@@ -1,8 +1,9 @@
-﻿#ifndef CIRCLE__H
+#ifndef CIRCLE__H
 #define CIRCLE__H
 
 #include "intersect.h"
 #include "line.h"
+#include "errorhandler.h"
 #include <math.h>
 #include <vector>
 

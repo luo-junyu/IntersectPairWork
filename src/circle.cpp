@@ -1,4 +1,4 @@
-﻿#include "circle.h"
+#include "circle.h"
 
 void Circle::lineIntersect(Line& line, vector<struct Position>& res_vector) {
 	struct Position res1;
@@ -168,6 +168,10 @@ void Circle::segLineIntersect(segLine& line, vector<struct Position>& res_vector
 
 void Circle::circleIntersect(const Circle& circle, vector<struct Position>& res_vector) {
 
+	if (this->x == circle.x || this->y == circle.y || this->r == circle.r) {
+		HandleError(ErrorType::SameCircle);
+	}
+
 	struct Position res1;
 	struct Position res2;
 	long long circle_r_power = circle.this_r_power;
@@ -197,7 +201,7 @@ void Circle::circleIntersect(const Circle& circle, vector<struct Position>& res_
 		circle_r_power * circle.y + this_x_power * this->y + this_x_power * circle.y - 2 * this->x * circle.x * this->y -
 		2 * this->x * circle.x * circle.y + circle_x_power * this->y + circle_x_power * circle.y + this_y_power * this->y -
 		this_y_power * circle.y - this->y * circle_y_power + circle_y_power * circle.y;
-
+	// TODO: 1 point or 2 point
 	res1.x = (subs2 - sigma_sqrt * this->y + sigma_sqrt * circle.y) / (2 * x_y_power);
 	res2.x = (subs2 + sigma_sqrt * this->y - sigma_sqrt * circle.y) / (2 * x_y_power);
 	res1.y = (subs3 + sigma_sqrt * this->x - sigma_sqrt * circle.x) / (2 * x_y_power);

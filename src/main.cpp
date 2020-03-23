@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include "intersect.h"
 #include "line.h"
 #include "circle.h"
@@ -52,12 +52,17 @@ int main(int argc, char** argv)
 			}
 		}
 	}*/
-	errortype = CommandError(argc, argv);
-	HandleError(errortype);
-	input.open(argv[2], ios::in);
-	errortype = EmptyFileError(input);
-	HandleError(errortype);
+	if (debug_mood) {
+		input.open("input.txt");
+	} else {
+		errortype = CommandError(argc, argv);
+		HandleError(errortype);
+		input.open(argv[2], ios::in);
+		errortype = EmptyFileError(input);
+		HandleError(errortype);
 
+		output.open(argv[4], ios::out);
+	}
 	input >> ntmp;
 	input.ignore();
 	errortype = NumError(ntmp);
@@ -113,7 +118,6 @@ int main(int argc, char** argv)
 
 	input.close();
 	
-
 	// Line & Line
 
 	for (int i = 0; i < line_num; i++) {
@@ -129,16 +133,16 @@ int main(int argc, char** argv)
 		for (int j = i + 1; j < rayLine_num; j++) {
 			rayLine& line1 = rayLines[i];
 			rayLine& line2 = rayLines[j];
-			line1.lineIntersect(line2, points);
+			line1.rayLineIntersect(line2, points);
 		}
 	}
 
-	// rayLine & rayLine
+	// segLine & segLine
 	for (int i = 0; i < segLine_num; i++) {
 		for (int j = i + 1; j < segLine_num; j++) {
 			segLine& line1 = segLines[i];
 			segLine& line2 = segLines[j];
-			line1.lineIntersect(line2, points);
+			line1.segLineIntersect(line2, points);
 		}
 	}
 
@@ -161,14 +165,14 @@ int main(int argc, char** argv)
 			line1.lineIntersect(line2, points);
 		}
 	}
-	
+
 	// rayLine & segLine
 
 	for (int i = 0; i < rayLine_num; i++) {
 		for (int j = 0; j < segLine_num; j++) {
-			segLine& line1 = segLines[i];
-			rayLine& line2 = rayLines[j];
-			line1.lineIntersect(line2, points);
+			rayLine& line1 = rayLines[i];
+			segLine& line2 = segLines[j];
+			line2.rayLineIntersect(line1, points);
 		}
 	}
 
@@ -203,7 +207,7 @@ int main(int argc, char** argv)
 	}
 
 	// Circle & Circle
-	
+
 	for (int i = 0; i < circle_num; i++) {
 		for (int j = i + 1; j < circle_num; j++) {
 			Circle& circle1 = circles[i];
@@ -216,9 +220,9 @@ int main(int argc, char** argv)
 	sort(points.begin(), points.end(), posCompare);
 	auto points_end = unique(points.begin(), points.end(), posEqual);
 
-	if (debug_mood) {
-		cout << points_end - points.begin() << endl;
-	}
+	// if (debug_mood) {
+	cout << points_end - points.begin() << endl;
+	// }
 
 	output << points_end - points.begin();
 	output.close();

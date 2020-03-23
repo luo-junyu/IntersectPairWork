@@ -1,4 +1,4 @@
-﻿#ifndef INTERSECT__H
+#ifndef INTERSECT__H
 #define INTERSECT__H
 
 using namespace std;

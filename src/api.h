@@ -1,4 +1,4 @@
-﻿#ifndef API__H
+#ifndef API__H
 #define API__H
 
 #include "intersect.h"

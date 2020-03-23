@@ -1,7 +1,8 @@
-﻿#ifndef LINE__H
+#ifndef LINE__H
 #define LINE__H
 
 #include "intersect.h"
+#include "errorhandler.h"
 #include <vector>
 
 class Line

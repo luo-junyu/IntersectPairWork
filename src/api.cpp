@@ -1,4 +1,4 @@
-﻿#include "api.h"
+#include "api.h"
 
 IntersectionCounter::IntersectionCounter() {
 	x_max = -100000.0;
@@ -208,7 +208,7 @@ vector<double> IntersectionCounter::getFigures() {
 		double flag = 1;
 		double line_x_right, line_x_left;
 		double line_y_right, line_y_left;
-		if (line.a == 0) {
+		if (line.b == 0) {
 			line_x_right = line.x1;
 			line_x_left = line.x1;
 			line_y_right = y_max;

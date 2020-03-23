@@ -1,4 +1,4 @@
-﻿#include "line.h"
+#include "line.h"
 #include<stdio.h>
 /*
 	Bulid a line (ax + by + c = 0)
@@ -19,6 +19,9 @@ Line::Line(long long x1, long long y1, long long x2, long long y2)
 void Line::	lineIntersect(Line& other_line, vector<struct Position>& res_vector) {
 	long long lower = this->a * other_line.b - this->b * other_line.a;
 	if (lower == 0) {
+		if (this->a * other_line.x1 + this->b * other_line.y1 + this->c == 0) {
+			HandleError(ErrorType::SameLine);
+		}
 		return;
 	}
 	long long x_upper = this->b * other_line.c - other_line.b * this->c;
@@ -81,6 +84,9 @@ void rayLine::lineIntersect(Line& other_line, vector<struct Position>& res_vecto
 {
 	long long lower = this->a * other_line.b - this->b * other_line.a;
 	if (lower == 0) {
+		if (this->a * other_line.x1 + this->b * other_line.y1 + this->c == 0) {
+			HandleError(ErrorType::SameLine);
+		}
 		return;
 	}
 
@@ -110,9 +116,35 @@ void rayLine::lineIntersect(Line& other_line, vector<struct Position>& res_vecto
 void rayLine::rayLineIntersect(rayLine& other_line, vector<struct Position>& res_vector)
 {
 	long long lower = this->a * other_line.b - this->b * other_line.a;
+
 	if (lower == 0) {
+		if (this->a * other_line.x1 + this->b * other_line.y1 + this->c == 0) {	// same line
+			if ((this->x_forward == -1 && other_line.x_forward == 1) ||
+				(this->x_forward == 1 && other_line.x_forward == -1) ||
+				(this->x_forward == 0 && (this->y_forward == -1 * other_line.y_forward))
+			) {
+				// different forward
+				if (this->x_end1 == other_line.x_end1 && this->y_end1 == other_line.y_end1) {
+					struct Position res;
+					res.x = this->x_end1;
+					res.y = this->x_end1;
+					res_vector.push_back(res);
+					return;
+				} else if ((this->x_forward == -1 && other_line.x_end1 < this->x_end1) ||
+					(this->x_forward == 1 && other_line.x_end1 > this->x_end1) ||
+					(this->x_forward == 0 && ((this->y_forward == 1 && other_line.y_end1 > this->y_end1) ||
+					(this->y_forward == -1 && other_line.y_end1 < this->y_end1)))) {
+					HandleError(ErrorType::SameLine);
+				} else {
+					// not error
+				}
+			} else {
+				HandleError(ErrorType::SameLine);
+			}
+		}
 		return;
 	}
+
 	long long x_upper = this->b * other_line.c - other_line.b * this->c;
 
 	double x = x_upper * 1.0 / lower;
@@ -192,6 +224,9 @@ void segLine::lineIntersect(Line& other_line, vector<struct Position>& res_vecto
 {
 	long long lower = this->a * other_line.b - this->b * other_line.a;
 	if (lower == 0) {
+		if (this->a * other_line.x1 + this->b * other_line.y1 + this->c == 0) {
+			HandleError(ErrorType::SameLine);
+		}
 		return;
 	}
 
@@ -222,6 +257,56 @@ void segLine::lineIntersect(Line& other_line, vector<struct Position>& res_vecto
 void segLine::rayLineIntersect(rayLine& other_line, vector<struct Position>& res_vector)
 {
 	long long lower = this->a * other_line.b - this->b * other_line.a;
+
+	if (lower == 0) {
+		if (this->a * other_line.x1 + this->b * other_line.y1 + this->c == 0) {	// same line
+			
+			if (other_line.x_forward == 1) {
+				if (this->x_endRight == other_line.x_end1) {
+					struct Position res;
+					res.x = other_line.x_end1;
+					res.y = other_line.y_end1;
+					res_vector.push_back(res);
+					return;
+				} else if (this->x_endRight > other_line.x_end1) {
+					HandleError(ErrorType::SameLine);
+				} 
+			} else if (other_line.x_forward == -1) {
+				if (this->x_endLeft == other_line.x_end1) {
+					struct Position res;
+					res.x = other_line.x_end1;
+					res.y = other_line.y_end1;
+					res_vector.push_back(res);
+					return;
+				} else if (this->x_endLeft < other_line.x_end1) {
+					HandleError(ErrorType::SameLine);
+				}
+			} else if (other_line.x_forward == 0 && other_line.y_forward == 1) {
+				if (this->y_endRight == other_line.y_end1) {
+					struct Position res;
+					res.x = other_line.x_end1;
+					res.y = other_line.y_end1;
+					res_vector.push_back(res);
+					return;
+				} else if (this->y_endRight > other_line.y_end1) {
+					HandleError(ErrorType::SameLine);
+				}
+			} else if (other_line.x_forward == 0 && other_line.y_forward == -1) {
+				if (this->y_endLeft == other_line.y_end1) {
+					struct Position res;
+					res.x = other_line.x_end1;
+					res.y = other_line.y_end1;
+					res_vector.push_back(res);
+					return;
+				} else if (this->y_endLeft < other_line.y_end1) {
+					HandleError(ErrorType::SameLine);
+				}
+			}
+
+		}
+		return;
+	}
+
 	if (lower == 0) {
 		return;
 	}
@@ -260,6 +345,51 @@ void segLine::segLineIntersect(segLine& other_line, vector<struct Position>& res
 {
 	long long lower = this->a * other_line.b - this->b * other_line.a;
 	if (lower == 0) {
+		if (this->a * other_line.x1 + this->b * other_line.y1 + this->c == 0) {	// same line
+			if (this->x_endLeft == this->x_endRight) {
+				if (this->y_endLeft == other_line.y_endRight) {
+					struct Position res;
+					res.x = this->x_endLeft;
+					res.y = this->y_endLeft;
+					res_vector.push_back(res);
+					return;
+				} else if (this->y_endRight == other_line.y_endLeft) {
+					struct Position res;
+					res.x = this->x_endLeft;
+					res.y = this->y_endRight;
+					res_vector.push_back(res);
+					return;
+				} else if ((this->y1 >= other_line.y_endLeft && this->y1 <= other_line.y_endRight) ||
+					(this->y2 >= other_line.y_endLeft && this->y2 <= other_line.y_endRight)) {
+					HandleError(ErrorType::SameLine);
+				}
+			} else {
+				if (this->x_endLeft == other_line.x_endRight) {
+					struct Position res;
+					res.x = this->x_endLeft;
+					if (this->x_endLeft == this->x1) {
+						res.y = this->y1;
+					} else {
+						res.y = this->y2;
+					}
+					res_vector.push_back(res);
+					return;
+				} else if (this->x_endRight == other_line.x_endLeft) {
+					struct Position res;
+					res.x = this->x_endRight;
+					if (this->x_endRight == this->x1) {
+						res.y = this->y1;
+					} else {
+						res.y = this->y2;
+					}
+					res_vector.push_back(res);
+					return;
+				} else if ((this->x1 >= other_line.x_endLeft && this->x1 <= other_line.x_endRight) || 
+					(this->x2 >= other_line.x_endLeft && this->x2 <= other_line.x_endRight)) {
+					HandleError(ErrorType::SameLine);
+				}
+			}
+		}
 		return;
 	}
 
