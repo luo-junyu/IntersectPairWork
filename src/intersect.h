@@ -2,7 +2,7 @@
 #define INTERSECT__H
 
 using namespace std;
-const double eps = 0.0000000000001;
+const double eps = 0.0000000001;
 const double eps_neg = -1 * eps;
 
 struct Position

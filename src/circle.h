@@ -22,6 +22,9 @@ public:
 		this->x = 0;
 		this->y = 0;
 		this->r = 0;
+		this_r_power = this->r * this->r;
+		this_x_power = this->x * this->x;
+		this_y_power = this->y * this->y;
 	}
 	ErrorType lineIntersect(Line&, vector<struct Position>&);
 	ErrorType rayLineIntersect(rayLine&, vector<struct Position>&);

@@ -9,7 +9,7 @@
 #include "errorhandler.h"
 #include <string>
 
-const int debug_mood = 1;
+const int debug_mood = 0;
 
 using namespace std;
 
@@ -60,7 +60,6 @@ int main(int argc, char** argv)
 		input.open(argv[2], ios::in);
 		errortype = EmptyFileError(input);
 		HandleError(errortype);
-
 		output.open(argv[4], ios::out);
 	}
 	input >> ntmp;

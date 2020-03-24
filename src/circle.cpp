@@ -40,6 +40,7 @@ ErrorType Circle::lineIntersect(Line& line, vector<struct Position>& res_vector)
 			return ErrorType::NoError;
 		}
 	} 
+	return ErrorType::NoError;
 }
 
 

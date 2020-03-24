@@ -209,15 +209,15 @@ vector<double> IntersectionCounter::getFigures() {
 		double line_x_right, line_x_left;
 		double line_y_right, line_y_left;
 		if (line.b == 0) {
-			line_x_right = line.x1;
-			line_x_left = line.x1;
-			line_y_right = y_max;
-			line_y_left = y_min;
+			line_x_right = (double)line.x1;
+			line_x_left = (double)line.x1;
+			line_y_right = (double)y_max;
+			line_y_left = (double)y_min;
 		} else {
-			line_x_right = x_max;
-			line_x_left = x_min;
-			line_y_right = (line.c * -1. - line.a * x_max) / line.b;
-			line_y_left = (line.c * -1. - line.a * x_min) / line.b;
+			line_x_right = (double)x_max;
+			line_x_left = (double)x_min;
+			line_y_right = (double)(line.c * -1. - line.a * x_max) / line.b;
+			line_y_left = (double)(line.c * -1. - line.a * x_min) / line.b;
 		}
 		res.push_back(flag);
 		res.push_back(line_x_right);
@@ -230,26 +230,26 @@ vector<double> IntersectionCounter::getFigures() {
 		double line_x_right, line_x_left;
 		double line_y_right, line_y_left;
 		if (line.x_forward == 1) {
-			line_x_right = x_max;
-			line_y_right = (line.c * -1. - line.a * x_max) / line.b;
-			line_x_left = line.x_end1;
-			line_y_left = line.y_end1;
+			line_x_right = (double)x_max;
+			line_y_right = (double)(line.c * -1. - line.a * x_max) / line.b;
+			line_x_left = (double)line.x_end1;
+			line_y_left = (double)line.y_end1;
 		} else if (line.x_forward == -1) {
-			line_x_left = x_min;
-			line_y_left = (line.c * -1. - line.a * x_min) / line.b;
-			line_x_right = line.x_end1;
-			line_y_right = line.y_end1;
+			line_x_left = (double)x_min;
+			line_y_left = (double)(line.c * -1. - line.a * x_min) / line.b;
+			line_x_right = (double)line.x_end1;
+			line_y_right = (double)line.y_end1;
 		} else if (line.x_forward == 0) {
 			if (line.y_forward == 1) {
-				line_x_right = line.x1;
-				line_y_right = y_max;
-				line_x_left = line.x1;
-				line_y_left = line.y_end1;
+				line_x_right = (double)line.x1;
+				line_y_right = (double)y_max;
+				line_x_left = (double)line.x1;
+				line_y_left = (double)line.y_end1;
 			} else if (line.y_forward == 0) {
-				line_x_right = line.x1;
-				line_y_right = y_min;
-				line_x_left = line.x1;
-				line_y_left = line.y_end1;
+				line_x_right = (double)line.x1;
+				line_y_right = (double)y_min;
+				line_x_left = (double)line.x1;
+				line_y_left = (double)line.y_end1;
 			}
 		}
 		res.push_back(2.);
@@ -261,17 +261,17 @@ vector<double> IntersectionCounter::getFigures() {
 
 	for (segLine line : segLines) {
 		res.push_back(3.);
-		res.push_back(line.x1);
-		res.push_back(line.y1);
-		res.push_back(line.x2);
-		res.push_back(line.y2);
+		res.push_back((double)line.x1);
+		res.push_back((double)line.y1);
+		res.push_back((double)line.x2);
+		res.push_back((double)line.y2);
 	}
 
 	for (Circle circle : circles) {
 		res.push_back(4.);
-		res.push_back(circle.x);
-		res.push_back(circle.y);
-		res.push_back(circle.r);
+		res.push_back((double)circle.x);
+		res.push_back((double)circle.y);
+		res.push_back((double)circle.r);
 		res.push_back(0);
 	}
 
